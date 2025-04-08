@@ -8,9 +8,6 @@
 @property (nonatomic, copy) NSString* callbackId;
 @end
 
-- (void)readFileStorage:(CDVInvokedUrlCommand*)command;
-@end
-
 @implementation FileStorageReaderPlugin
 
 - (void)readFileStorage:(CDVInvokedUrlCommand*)command {
