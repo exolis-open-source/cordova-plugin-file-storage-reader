@@ -7,7 +7,7 @@
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="FileStorageReaderPlugin">
-                <param name="android-package" value="cordovaPluginFileStorageReader.FileStorageReaderPlugin"/>
+                <param name="android-package" value="fr.exolis.opensource.filestoragereader.FileStorageReaderPlugin"/>
             </feature>
         </config-file>
         <config-file parent="/*" target="AndroidManifest.xml"></config-file>

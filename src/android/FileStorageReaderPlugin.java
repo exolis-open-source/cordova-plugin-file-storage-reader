@@ -1,4 +1,4 @@
-package FileStorageReaderPlugin;
+package fr.exolis.opensource.filestoragereader;
 
 import org.apache.cordova.*;
 
