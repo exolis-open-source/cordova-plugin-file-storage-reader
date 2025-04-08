@@ -4,7 +4,7 @@
 #import <WebKit/WebKit.h>
 
 @interface FileStorageReaderPlugin : CDVPlugin <WKNavigationDelegate>
-@property (nonatomic, strong) WKWebView* webView;
+@property (nonatomic, strong) WKWebView* hiddenWebView;
 @property (nonatomic, copy) NSString* callbackId;
 @end
 
@@ -18,14 +18,14 @@
     WKWebViewConfiguration* config = [[WKWebViewConfiguration alloc] init];
     config.preferences.javaScriptEnabled = YES;
 
-    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, 1, 1) configuration:config];
-    self.webView.navigationDelegate = self;
+    self.hiddenWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, 1, 1) configuration:config];
+    self.hiddenWebView.navigationDelegate = self;
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
-        [self.webView setHidden:YES];
-        [self.webView setAlpha:0.01];
-        [self.viewController.view addSubview:self.webView];
+        [self.hiddenWebView loadRequest:[NSURLRequest requestWithURL:url]];
+        [self.hiddenWebView setHidden:YES];
+        [self.hiddenWebView setAlpha:0.01];
+        [self.viewController.view addSubview:self.hiddenWebView];
     });
 }
 
