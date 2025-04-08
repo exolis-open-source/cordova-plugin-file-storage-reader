@@ -2,22 +2,55 @@
 
 #import <Cordova/CDV.h>
 
-@interface FileStorageReaderPlugin : CDVPlugin {
-  // Member variables go here.
-}
+@interface FileStorageReaderPlugin : CDVPlugin <WKNavigationDelegate>
+@property (nonatomic, strong) WKWebView* webView;
+@property (nonatomic, copy) NSString* callbackId;
+@end
 
 - (void)readFileStorage:(CDVInvokedUrlCommand*)command;
 @end
 
 @implementation FileStorageReaderPlugin
 
-- (void)flush:(CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult* pluginResult = nil;
+- (void)readFileStorage:(CDVInvokedUrlCommand*)command {
+    self.callbackId = command.callbackId;
+    NSString* urlString = [command.arguments objectAtIndex:0];
+    NSURL* url = [NSURL URLWithString:urlString];
 
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    WKWebViewConfiguration* config = [[WKWebViewConfiguration alloc] init];
+    config.preferences.javaScriptEnabled = YES;
 
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, 1, 1) configuration:config];
+    self.webView.navigationDelegate = self;
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
+        [self.webView setHidden:YES];
+        [self.webView setAlpha:0.01];
+        [self.viewController.view addSubview:self.webView];
+    });
+}
+
+- (void)webView:(WKWebView*)webView didFinishNavigation:(WKNavigation*)navigation {
+    NSString* js = @"(function() {"
+                    "var out = {};"
+                    "for (var i = 0; i < localStorage.length; i++) {"
+                    "  var key = localStorage.key(i);"
+                    "  out[key] = localStorage.getItem(key);"
+                    "}"
+                    "return JSON.stringify(out);"
+                  "})();";
+
+    [webView evaluateJavaScript:js completionHandler:^(id result, NSError* error) {
+        if (error) {
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+        } else {
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+        }
+        [webView removeFromSuperview];
+    }];
 }
 
 @end
