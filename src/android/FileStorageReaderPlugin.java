@@ -25,19 +25,19 @@ public class FileStorageReaderPlugin extends CordovaPlugin {
 
   private void readFileStorage(String url, CallbackContext callbackContext) {
     WebView myWebView = new WebView(cordova.getContext());
-    webView.getSettings().setJavaScriptEnabled(true);
-    webView.getSettings().setAllowFileAccess(true);
-    webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-    webView.setVisibility(View.INVISIBLE);
+    myWebView.getSettings().setJavaScriptEnabled(true);
+    myWebView.getSettings().setAllowFileAccess(true);
+    myWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+    myWebView.setVisibility(View.INVISIBLE);
 
-    webView.addJavascriptInterface(new Object() {
+    myWebView.addJavascriptInterface(new Object() {
       @JavascriptInterface
       public void onData(String json) {
         callbackContext.success(json);
       }
     }, "JSBridge");
 
-    webView.setWebViewClient(new WebViewClient() {
+    myWebView.setWebViewClient(new WebViewClient() {
       @Override
       public void onPageFinished(WebView view, String url) {
         view.evaluateJavascript(
@@ -51,7 +51,7 @@ public class FileStorageReaderPlugin extends CordovaPlugin {
           "})()", null);
       }
     });
-    cordova.getActivity().addContentView(webView, new FrameLayout.LayoutParams(1, 1));
-    webView.loadUrl(url);
+    cordova.getActivity().addContentView(myWebView, new FrameLayout.LayoutParams(1, 1));
+    myWebView.loadUrl(url);
   }
 }
