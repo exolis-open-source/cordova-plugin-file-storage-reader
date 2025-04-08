@@ -29,6 +29,9 @@ public class FileStorageReaderPlugin extends CordovaPlugin {
     myWebView.getSettings().setJavaScriptEnabled(true);
     myWebView.getSettings().setAllowFileAccess(true);
     myWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+    myWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+    myWebView.getSettings().setDomStorageEnabled(true); // nécessaire pour localStorage
+    myWebView.getSettings().setDatabaseEnabled(true);
     myWebView.setVisibility(View.INVISIBLE);
 
     myWebView.addJavascriptInterface(new Object() {
