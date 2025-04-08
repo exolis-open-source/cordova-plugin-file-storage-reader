@@ -17,7 +17,7 @@ public class FileStorageReaderPlugin extends CordovaPlugin {
   @Override
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
     if (action.equals("readFileStorage")) {
-      cordova.getActivity().runOnUiThread(() -> readFileStorage(args.getString(0), callbackContext);
+      cordova.getActivity().runOnUiThread(() -> readFileStorage(args.getString(0), callbackContext));
       return true;
     }
     return false;
