@@ -1,6 +1,7 @@
 /********* FileStorageReaderPlugin.m Cordova Plugin Implementation *******/
 
 #import <Cordova/CDV.h>
+#import <WebKit/WebKit.h>
 
 @interface FileStorageReaderPlugin : CDVPlugin <WKNavigationDelegate>
 @property (nonatomic, strong) WKWebView* webView;
