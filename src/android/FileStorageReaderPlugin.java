@@ -1,13 +1,10 @@
 package FileStorageReaderPlugin;
 
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CallbackContext;
+import org.apache.cordova.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import android.os.Build.VERSION;
 import android.webkit.*;
 import android.view.*;
 import android.widget.*;
