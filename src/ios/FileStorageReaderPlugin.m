@@ -12,18 +12,23 @@
 
 - (void)readFileStorage:(CDVInvokedUrlCommand*)command {
     self.callbackId = command.callbackId;
-    
+    if ([command.arguments objectAtIndex:0 hasPrefix:@"file://"]) {
+        NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index" ofType:@"html"]];
+    } else {
+        NSString* urlString = [command.arguments objectAtIndex:0];
+        NSURL* url = [NSURL URLWithString:urlString];
+    }
+
     WKWebViewConfiguration* config = [[WKWebViewConfiguration alloc] init];
     config.preferences.javaScriptEnabled = YES;
 
     self.hiddenWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, 1, 1) configuration:config];
     self.hiddenWebView.navigationDelegate = self;
 
-    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index" ofType:@"html"]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.hiddenWebView loadRequest:request];
+        [self.hiddenWebView loadRequest:request;
         [self.hiddenWebView setHidden:YES];
         [self.hiddenWebView setAlpha:0.01];
         [self.viewController.view addSubview:self.hiddenWebView];
