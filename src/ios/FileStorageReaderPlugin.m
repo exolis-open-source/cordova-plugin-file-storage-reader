@@ -12,10 +12,11 @@
 
 - (void)readFileStorage:(CDVInvokedUrlCommand*)command {
     self.callbackId = command.callbackId;
-    if ([command.arguments objectAtIndex:0 hasPrefix:@"file://"]) {
+    NSString *urlString = [command.arguments objectAtIndex:0];
+
+    if ([urlString hasPrefix:@"file://"]) {
         NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index" ofType:@"html"]];
     } else {
-        NSString* urlString = [command.arguments objectAtIndex:0];
         NSURL* url = [NSURL URLWithString:urlString];
     }
 
