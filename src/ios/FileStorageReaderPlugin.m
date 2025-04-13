@@ -13,11 +13,11 @@
 - (void)readFileStorage:(CDVInvokedUrlCommand*)command {
     self.callbackId = command.callbackId;
     NSString *urlString = [command.arguments objectAtIndex:0];
-
+    NSURL *url;
     if ([urlString hasPrefix:@"file://"]) {
-        NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index" ofType:@"html"]];
+        url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"www/index" ofType:@"html"]];
     } else {
-        NSURL* url = [NSURL URLWithString:urlString];
+        url = [NSURL URLWithString:urlString];
     }
 
     WKWebViewConfiguration* config = [[WKWebViewConfiguration alloc] init];
@@ -29,7 +29,7 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.hiddenWebView loadRequest:request;
+        [self.hiddenWebView loadRequest:request];
         [self.hiddenWebView setHidden:YES];
         [self.hiddenWebView setAlpha:0.01];
         [self.viewController.view addSubview:self.hiddenWebView];
